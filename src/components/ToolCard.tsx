@@ -2,18 +2,24 @@ import { useState } from "react";
 import { Copy, RotateCcw, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
 interface ToolCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  longDescription: string;
   example: string;
-  faq: { q: string; a: string }[];
+  faq: FaqItem[];
   result: string;
   onReset: () => void;
   children: React.ReactNode;
 }
 
-const ToolCard = ({ icon, title, description, example, faq, result, onReset, children }: ToolCardProps) => {
+const ToolCard = ({ icon, title, description, longDescription, example, faq, result, onReset, children }: ToolCardProps) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleCopy = () => {
@@ -24,7 +30,7 @@ const ToolCard = ({ icon, title, description, example, faq, result, onReset, chi
   };
 
   return (
-    <div className={`rounded-lg border bg-card transition-all duration-[250ms] ease-out ${expanded ? "tool-card-shadow-hover" : "tool-card-shadow hover:tool-card-shadow-hover"}`}>
+    <article className={`rounded-lg border bg-card transition-all duration-[250ms] ease-out ${expanded ? "tool-card-shadow-hover" : "tool-card-shadow hover:tool-card-shadow-hover"}`}>
       <button
         onClick={() => setExpanded(!expanded)}
         className="flex w-full items-center justify-between p-4 md:p-5 text-left"
@@ -34,7 +40,7 @@ const ToolCard = ({ icon, title, description, example, faq, result, onReset, chi
             {icon}
           </span>
           <div>
-            <h3 className="font-semibold text-card-foreground text-sm md:text-base">{title}</h3>
+            <h2 className="font-semibold text-card-foreground text-sm md:text-base">{title}</h2>
             <p className="text-xs text-muted-foreground mt-0.5 hidden sm:block">{description}</p>
           </div>
         </div>
@@ -55,18 +61,26 @@ const ToolCard = ({ icon, title, description, example, faq, result, onReset, chi
               </div>
             )}
           </div>
+
+          {/* Structured content section */}
           <div className="mt-5 space-y-3 border-t pt-4">
+            <p className="text-xs text-muted-foreground leading-relaxed">{longDescription}</p>
             <p className="text-xs text-muted-foreground"><span className="font-medium">Example:</span> {example}</p>
-            {faq.map((item, i) => (
-              <details key={i} className="group text-xs">
-                <summary className="cursor-pointer font-medium text-muted-foreground hover:text-foreground transition-colors">{item.q}</summary>
-                <p className="mt-1 text-muted-foreground">{item.a}</p>
-              </details>
-            ))}
+            {faq.length > 0 && (
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-foreground">FAQ</h3>
+                {faq.map((item, i) => (
+                  <details key={i} className="group text-xs">
+                    <summary className="cursor-pointer font-medium text-muted-foreground hover:text-foreground transition-colors">{item.q}</summary>
+                    <p className="mt-1 text-muted-foreground">{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
-    </div>
+    </article>
   );
 };
 
