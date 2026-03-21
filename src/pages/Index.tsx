@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import SearchBar from "@/components/SearchBar";
 import Footer from "@/components/Footer";
 import {
@@ -58,23 +59,46 @@ const Index = () => {
       <main className="flex-1">
         {/* Hero */}
         <section className="container pt-16 pb-12 md:pt-24 md:pb-16 text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground"
+          >
             Essential tools.{" "}
             <span className="text-primary">Nothing more.</span>
-          </h1>
-          <p className="mt-4 text-muted-foreground text-base md:text-lg max-w-md mx-auto leading-relaxed">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+            className="mt-4 text-muted-foreground text-base md:text-lg max-w-md mx-auto leading-relaxed"
+          >
             Fast, reliable, and distraction-free.
-          </p>
-          <div className="mt-8">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+            className="mt-8"
+          >
             <SearchBar value={search} onChange={setSearch} />
-          </div>
+          </motion.div>
         </section>
 
         {/* Tools */}
         <section className="container pb-16">
           <div className="grid gap-3 sm:grid-cols-2">
-            {filtered.map(({ key, Component }) => (
-              <Component key={key} />
+            {filtered.map(({ key, Component }, i) => (
+              <motion.div
+                key={key}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
+              >
+                <Component />
+              </motion.div>
             ))}
           </div>
           {filtered.length === 0 && (
